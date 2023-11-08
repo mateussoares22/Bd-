@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css">
+    <title>Autoras</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/livros.html">Livros</a></li>
+                <li> <a href="./autores.html">Autores</a></li>
+                <li> <a href="./editoras.html">Editoras</a></li>
+            </ul>
+        </nav>
+        <h1>Minha Biblioteca</h1>
+    </header>
+
+    <main>
+        <h2>Lista de Autores</h2>
+        <button class="icon-btn" id="addBookBtn">
+            <i class="fas fa-plus"></i> Adicionar
+        </button>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome do Autor /</th>
+                        <th>Biografia /</th>
+                        <th>Data de nascimento</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="listaLivros"></tbody>
+            </table>
+
+            </main>
+            <!-- Popup para Adicionar/Atualizar Livro -->
+            <div id="bookPopup" class="hidden">
+                <form id="bookForm">
+                    <h3>Adicionar Autor</h3>
+                    <input type="hidden" id="id_livro">
+                    <input type="text" id="autor" placeholder="Autor" required>
+                    <input type="text" id="Biografia" placeholder="Biografia" required>
+                    <input type="date" id="data_nascimento" placeholder="Data de Nascimento" required>
+                    <button type="submit">Salvar</button>
+                    <button type="button" id="closePopupBtn">Fechar</button>
+                </form>
+            </div>
+        
+            <script src="/js/app.js"></script>
+            <script src="/js/livros.js"></script>
+
+    <footer>
+        <p>&copy; 2023 Minha Biblioteca</p>
+    </footer>
+</body>
+</html>
