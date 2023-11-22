@@ -136,3 +136,42 @@ document.addEventListener("DOMContentLoaded", function() {
     
     });
 });
+
+
+function carregarAutores() {
+    fetch("/api/autores")
+    .then(response => response.json())
+    .then(autores => {
+      const autorSelect = document.getElementById("autor");
+      autores.forEach(autor => {
+        const option = document.createElement("option");
+        option.value = autor.id;
+        option.textContent = autor.nome;
+        autorSelect.appendChild(option);
+      });
+    })
+    .catch(error => console.error("Erro ao carregar autores:", error));
+  }
+  
+  function carregarEditoras() {
+    fetch("/api/editoras")
+    .then(response => response.json())
+    .then(editoras => {
+      const editoraSelect = document.getElementById("editora");
+      editoras.forEach(editora => {
+        const option = document.createElement("option");
+        option.value = editora.id;
+        option.textContent = editora.nome;
+        editoraSelect.appendChild(option);
+      });
+    })
+    .catch(error => console.error("Erro ao carregar editoras:", error));
+  }
+document.addEventListener("DOMContentLoaded", function() {
+
+        carregarAutores();
+        carregarEditoras();
+ })
+
+
+ 

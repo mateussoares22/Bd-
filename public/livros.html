@@ -43,7 +43,20 @@
             <h3>Adicionar/Atualizar Livro</h3>
             <input type="hidden" id="id_livro">
             <input type="text" id="titulo" placeholder="Título" required>
-            <input type="text" id="autor" placeholder="Autor" required>
+            <div id="autor">
+                <label for="autor">Autor:</label>
+                <select id="autor" required>
+                  <option value="">Selecione um autor</option>
+                  <!-- Opções de autores serão adicionadas aqui -->
+                </select>
+              </div>
+              <div>
+                <label for="editora">Editora:</label>
+                <select id="editora" required>
+                  <option value="">Selecione uma editora</option>
+                  <!-- Opções de editoras serão adicionadas aqui -->
+                </select>
+              </div>
             <input type="date" id="dataPublicacao" placeholder="Data de Publicação" required>
             <button type="submit">Salvar</button>
             <button type="button" id="closePopupBtn">Fechar</button>
