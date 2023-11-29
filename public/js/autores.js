@@ -1,90 +1,90 @@
-function displayLivros(livros) {
-    const tbody = document.getElementById("listaLivros");
+function displayAutores(Autores) {
+    const tbody = document.getElementById("listaAutores");
     tbody.innerHTML = ""; // Limpar a tabela
 
-    livros.forEach(livro => {
+    Autores.forEach(autor => {
         const row = tbody.insertRow();
 
-        const tituloCell = row.insertCell(0);
-        tituloCell.textContent = livro.titulo;
+        const nomeCell = row.insertCell(0);
+        nomeCell.textContent = autor.nome;
 
-        const autorCell = row.insertCell(1);
-        autorCell.textContent = livro.autor;
+        const biografiaCell = row.insertCell(1);
+        biografiaCell.textContent = autor.biografia;
 
         const dataCell = row.insertCell(2);
-        dataCell.textContent = new Date(livro.dataPublicacao).toLocaleDateString();
+        dataCell.textContent = new Date(autor.dataNascimento).toLocaleDateString();
 
         const actionsCell = row.insertCell(3);
-        actionsCell.innerHTML = `<button class="icon-btn" onclick='editarLivro(${JSON.stringify(livro)})'>
+        actionsCell.innerHTML = `<button class="icon-btn" onclick='editarAutor(${JSON.stringify(autor)})'>
         <i class="fas fa-edit"></i> Editar
     </button>
-    <button class="icon-btn" onclick="deleteLivro(${livro.id})">
+    <button class="icon-btn" onclick="deleteAutor(${autor.id})">
     <i class="fas fa-trash"></i> Excluir
     </button>`;
     });
 }
 
-function fetchLivros() {
-    fetch("/api/livros")
+function fetchAutores() {
+    fetch("/api/autores")
         .then(res => res.json())
         .then(data => {
-            displayLivros(data);
+            displayAutores(data);
         })
         .catch(error => {
-            console.error("Erro ao buscar livros:", error);
+            console.error("Erro ao buscar Autores:", error);
         });
 }
 
-function deleteLivro(id) {
-    fetch(`/api/livros/${id}`, {
+function deleteAutor(id) {
+    fetch(`/api/autores/${id}`, {
         method: "DELETE"
     })
     .then(res => {
         if (!res.ok) throw new Error(res.statusText);
-        fetchLivros();
+        fetchAutores();
     })
     .catch(error => {
-        console.error("Erro ao deletar livro:", error);
+        console.error("Erro ao deletar autor:", error);
     });
 }
 
-function editarLivro(livro) {
+function editarAutor(autor) {
     const addBookBtn = document.getElementById("addBookBtn");
-    const titulo = document.getElementById("titulo");
-    const autor = document.getElementById("autor");
-    const dataPublicacao = document.getElementById("dataPublicacao");
-    const livroId= document.getElementById("id_livro");
-    titulo.value = livro.titulo;
-    autor.value = livro.autor;
-    dataPublicacao.value = new Date(livro.dataPublicacao).toISOString().split('T')[0];
-    livroId.value = livro.id;
+    const nome = document.getElementById("nome");
+    const biografia = document.getElementById("biografia");
+    const dataNascimento = document.getElementById("dataNascimento");
+    const autorId= document.getElementById("id_autor");
+    nome.value = autor.nome;
+    biografia.value = autor.biografia;
+    dataNascimento.value = new Date(autor.dataNascimento).toISOString().split('T')[0];
+    autorId.value = autor.id;
     addBookBtn.click();
 /**/
 }
 
 function limparFormulario(){
-    const titulo = document.getElementById("titulo");
-    const autor = document.getElementById("autor");
-    const dataPublicacao = document.getElementById("dataPublicacao");
-    const livroId= document.getElementById("id_livro");
+    const nome = document.getElementById("nome");
+    const biografia = document.getElementById("biografia");
+    const dataNascimento = document.getElementById("dataNascimento");
+    const autorId= document.getElementById("id_autor");
 
-    titulo.value = "";
-    autor.value = "";
-    dataPublicacao.value = "";
-    livroId.value = "";
+    nome.value = "";
+    biografia.value = "";
+    dataNascimento.value = "";
+    autorId.value = "";
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-    const apiUrl = "/api/livros";
+    const apiUrl = "/api/autores";
     const bookForm = document.getElementById("bookForm");
     const bookPopup = document.getElementById("bookPopup");
     const addBookBtn = document.getElementById("addBookBtn");
     const closePopupBtn = document.getElementById("closePopupBtn");
 
-    // Carregar livros ao carregar a página
-    fetchLivros()
+    // Carregar Autores ao carregar a página
+    fetchAutores()
 
-    // Mostrar popup ao clicar no botão "Adicionar Livro"
+    // Mostrar popup ao clicar no botão "Adicionar Autor"
     addBookBtn.addEventListener("click", function() {
         bookPopup.classList.add("show");
         bookPopup.classList.remove("hidden");
@@ -97,20 +97,20 @@ document.addEventListener("DOMContentLoaded", function() {
         limparFormulario();
     });
 
-    // Adicionar novo livro ou atualizar um existente
+    // Adicionar novo autor ou atualizar um existente
     bookForm.addEventListener("submit", function(event) {
         event.preventDefault();
 
-        const titulo = document.getElementById("titulo").value;
-        const autor = document.getElementById("autor").value;
-        const dataPublicacao = document.getElementById("dataPublicacao").value;
-        const livroId= document.getElementById("id_livro").value;
+        const nome = document.getElementById("nome").value;
+        const biografia = document.getElementById("biografia").value;
+        const dataNascimento = document.getElementById("dataNascimento").value;
+        const autorId= document.getElementById("id_autor").value;
 
         let methodSalvar = "POST";
         let apiUrlSalvar = apiUrl;
-        if(livroId != "" && livroId > 0){
+        if(autorId != "" && autorId > 0){
             methodSalvar = "PUT";
-            apiUrlSalvar += "/" + livroId;
+            apiUrlSalvar += "/" + autorId;
         }
     
         fetch(apiUrlSalvar, {
@@ -118,7 +118,7 @@ document.addEventListener("DOMContentLoaded", function() {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ titulo, autor, dataPublicacao })
+            body: JSON.stringify({ nome, biografia, dataNascimento })
         })
         .then(res => {
             if (res.ok && res.status == "201") return res.json();
@@ -126,13 +126,13 @@ document.addEventListener("DOMContentLoaded", function() {
             throw new Error(res.statusText);
         })
         .then(data => {
-            fetchLivros();
+            fetchAutores();
             limparFormulario();
             closePopupBtn.click();
         })
         .catch(error => {
-            console.error("Erro ao adicionar/atualizar livro:", error);
+            console.error("Erro ao adicionar/atualizar autor:", error);
         });
-    
+
     });
 });

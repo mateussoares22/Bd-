@@ -1,90 +1,90 @@
-function displayLivros(livros) {
-    const tbody = document.getElementById("listaLivros");
+function displayEditoras(editoras) {
+    const tbody = document.getElementById("listaEditoras");
     tbody.innerHTML = ""; // Limpar a tabela
 
-    livros.forEach(livro => {
+    editoras.forEach(editora => {
         const row = tbody.insertRow();
 
-        const tituloCell = row.insertCell(0);
-        tituloCell.textContent = livro.titulo;
+        const editoraCell = row.insertCell(0);
+        editoraCell.textContent = editora.editora;
 
-        const autorCell = row.insertCell(1);
-        autorCell.textContent = livro.autor;
+        const enderecoCell = row.insertCell(1);
+        enderecoCell.textContent = editora.endereco;
 
         const dataCell = row.insertCell(2);
-        dataCell.textContent = new Date(livro.dataPublicacao).toLocaleDateString();
+        dataCell.textContent = new Date(editora.telefone).toLocaleDateString();
 
         const actionsCell = row.insertCell(3);
-        actionsCell.innerHTML = `<button class="icon-btn" onclick='editarLivro(${JSON.stringify(livro)})'>
+        actionsCell.innerHTML = `<button class="icon-btn" onclick='editarEditora(${JSON.stringify(editora)})'>
         <i class="fas fa-edit"></i> Editar
     </button>
-    <button class="icon-btn" onclick="deleteLivro(${livro.id})">
+    <button class="icon-btn" onclick="deleteEditora(${editora.id})">
     <i class="fas fa-trash"></i> Excluir
     </button>`;
     });
 }
 
-function fetchLivros() {
-    fetch("/api/livros")
+function fetchAutores() {
+    fetch("/api/Autores")
         .then(res => res.json())
         .then(data => {
-            displayLivros(data);
+            displayAutores(data);
         })
         .catch(error => {
-            console.error("Erro ao buscar livros:", error);
+            console.error("Erro ao buscar Autores:", error);
         });
 }
 
-function deleteLivro(id) {
-    fetch(`/api/livros/${id}`, {
+function deleteEditora(id) {
+    fetch(`/api/Autores/${id}`, {
         method: "DELETE"
     })
     .then(res => {
         if (!res.ok) throw new Error(res.statusText);
-        fetchLivros();
+        fetchAutores();
     })
     .catch(error => {
-        console.error("Erro ao deletar livro:", error);
+        console.error("Erro ao deletar editora:", error);
     });
 }
 
-function editarLivro(livro) {
+function editarEditora(editora) {
     const addBookBtn = document.getElementById("addBookBtn");
-    const titulo = document.getElementById("titulo");
-    const autor = document.getElementById("autor");
-    const dataPublicacao = document.getElementById("dataPublicacao");
-    const livroId= document.getElementById("id_livro");
-    titulo.value = livro.titulo;
-    autor.value = livro.autor;
-    dataPublicacao.value = new Date(livro.dataPublicacao).toISOString().split('T')[0];
-    livroId.value = livro.id;
+    const editora = document.getElementById("editora");
+    const endereco = document.getElementById("endereco");
+    const telefone = document.getElementById("telefone");
+    const editoraId= document.getElementById("id_editora");
+    editora.value = editora.editora;
+    endereco.value = editora.endereco;
+    telefone.value = editora.telefone;
+    editoraId.value = editora.id;
     addBookBtn.click();
 /**/
 }
 
 function limparFormulario(){
-    const titulo = document.getElementById("titulo");
-    const autor = document.getElementById("autor");
-    const dataPublicacao = document.getElementById("dataPublicacao");
-    const livroId= document.getElementById("id_livro");
+    const editora = document.getElementById("editora");
+    const endereco = document.getElementById("endereco");
+    const telefone = document.getElementById("telefone");
+    const editoraId= document.getElementById("id_editora");
 
-    titulo.value = "";
-    autor.value = "";
-    dataPublicacao.value = "";
-    livroId.value = "";
+    editora.value = "";
+    endereco.value = "";
+    telefone.value = "";
+    editoraId.value = "";
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-    const apiUrl = "/api/livros";
+    const apiUrl = "/api/editoras";
     const bookForm = document.getElementById("bookForm");
     const bookPopup = document.getElementById("bookPopup");
     const addBookBtn = document.getElementById("addBookBtn");
     const closePopupBtn = document.getElementById("closePopupBtn");
 
-    // Carregar livros ao carregar a página
-    fetchLivros()
+    // Carregar editoras ao carregar a página
+    fetchEditoras()
 
-    // Mostrar popup ao clicar no botão "Adicionar Livro"
+    // Mostrar popup ao clicar no botão "Adicionar Editora"
     addBookBtn.addEventListener("click", function() {
         bookPopup.classList.add("show");
         bookPopup.classList.remove("hidden");
@@ -97,20 +97,20 @@ document.addEventListener("DOMContentLoaded", function() {
         limparFormulario();
     });
 
-    // Adicionar novo livro ou atualizar um existente
+    // Adicionar novo editora ou atualizar um existente
     bookForm.addEventListener("submit", function(event) {
         event.preventDefault();
 
-        const titulo = document.getElementById("titulo").value;
-        const autor = document.getElementById("autor").value;
-        const dataPublicacao = document.getElementById("dataPublicacao").value;
-        const livroId= document.getElementById("id_livro").value;
+        const editora = document.getElementById("editora").value;
+        const endereco = document.getElementById("endereco").value;
+        const telefone = document.getElementById("telefone").value;
+        const editoraId= document.getElementById("id_editora").value;
 
         let methodSalvar = "POST";
         let apiUrlSalvar = apiUrl;
-        if(livroId != "" && livroId > 0){
+        if(editoraId != "" && editoraId > 0){
             methodSalvar = "PUT";
-            apiUrlSalvar += "/" + livroId;
+            apiUrlSalvar += "/" + editoraId;
         }
     
         fetch(apiUrlSalvar, {
@@ -118,7 +118,7 @@ document.addEventListener("DOMContentLoaded", function() {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ titulo, autor, dataPublicacao })
+            body: JSON.stringify({ editora, endereco, telefone })
         })
         .then(res => {
             if (res.ok && res.status == "201") return res.json();
@@ -126,12 +126,12 @@ document.addEventListener("DOMContentLoaded", function() {
             throw new Error(res.statusText);
         })
         .then(data => {
-            fetchLivros();
+            fetchEditoras();
             limparFormulario();
             closePopupBtn.click();
         })
         .catch(error => {
-            console.error("Erro ao adicionar/atualizar livro:", error);
+            console.error("Erro ao adicionar/atualizar editora:", error);
         });
     
     });
