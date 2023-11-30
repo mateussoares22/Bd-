@@ -2,46 +2,46 @@ function displayEditoras(editoras) {
     const tbody = document.getElementById("listaEditoras");
     tbody.innerHTML = ""; // Limpar a tabela
 
-    editoras.forEach(editora => {
+    editoras.forEach(editor => {
         const row = tbody.insertRow();
 
-        const editoraCell = row.insertCell(0);
-        editoraCell.textContent = editora.editora;
+        const editorCell = row.insertCell(0);
+        editorCell.textContent = editora.editor;
 
         const enderecoCell = row.insertCell(1);
         enderecoCell.textContent = editora.endereco;
 
-        const dataCell = row.insertCell(2);
-        dataCell.textContent = new Date(editora.telefone).toLocaleDateString();
+        const telCell = row.insertCell(2);
+        telCell.textContent = (editora.telefone);
 
         const actionsCell = row.insertCell(3);
-        actionsCell.innerHTML = `<button class="icon-btn" onclick='editarEditora(${JSON.stringify(editora)})'>
+        actionsCell.innerHTML = `<button class="icon-btn" onclick='editarEditor(${JSON.stringify(editor)})'>
         <i class="fas fa-edit"></i> Editar
     </button>
-    <button class="icon-btn" onclick="deleteEditora(${editora.id})">
+    <button class="icon-btn" onclick="deleteEditor(${editor.id})">
     <i class="fas fa-trash"></i> Excluir
     </button>`;
     });
 }
 
-function fetchAutores() {
-    fetch("/api/Autores")
+function fetchEditors() {
+    fetch("/api/editoras")
         .then(res => res.json())
         .then(data => {
-            displayAutores(data);
+            displayEditoras(data);
         })
         .catch(error => {
-            console.error("Erro ao buscar Autores:", error);
+            console.error("Erro ao buscar Editoras:", error);
         });
 }
 
 function deleteEditora(id) {
-    fetch(`/api/Autores/${id}`, {
+    fetch(`/api/editoras/${id}`, {
         method: "DELETE"
     })
     .then(res => {
         if (!res.ok) throw new Error(res.statusText);
-        fetchAutores();
+        fetchEditoras();
     })
     .catch(error => {
         console.error("Erro ao deletar editora:", error);
@@ -54,7 +54,7 @@ function editarEditora(editora) {
     const endereco = document.getElementById("endereco");
     const telefone = document.getElementById("telefone");
     const editoraId= document.getElementById("id_editora");
-    editora.value = editora.editora;
+    editora.value = editora.editor;
     endereco.value = editora.endereco;
     telefone.value = editora.telefone;
     editoraId.value = editora.id;
